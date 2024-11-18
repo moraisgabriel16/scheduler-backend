@@ -16,14 +16,42 @@ connectDB();
 
 // Inicializar o Express
 const app = express();
-app.use(cors());
+
+// Configuração do CORS para permitir apenas o front-end
+const corsOptions = {
+  origin: 'https://scheduler-frontend-dun.vercel.app', // URL do front-end
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
+  credentials: true, // Permitir envio de cookies, se necessário
+};
+app.use(cors(corsOptions));
+
+// Middleware para processar JSON no body das requisições
 app.use(express.json());
+
+// Log de requisições para depuração
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  console.log('Origin:', req.headers.origin); // Log da origem da requisição
+  next();
+});
 
 // Configurar rotas
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/colaboradores', colaboradoresRoutes);
 app.use('/api/procedimentos', procedimentosRoutes);
 app.use('/api/agendamentos', agendamentosRoutes);
+
+// Rota para capturar erros 404 (não encontrada)
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Rota não encontrada.' });
+});
+
+// Tratamento de erros gerais
+app.use((err, req, res, next) => {
+  console.error('Erro:', err.message);
+  res.status(500).json({ message: 'Erro interno no servidor.' });
+});
 
 // Exportar app para Vercel
 module.exports = app;
