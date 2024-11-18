@@ -25,6 +25,11 @@ app.use('/api/colaboradores', colaboradoresRoutes);
 app.use('/api/procedimentos', procedimentosRoutes);
 app.use('/api/agendamentos', agendamentosRoutes);
 
-// Porta de escuta
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+// Exportar app para Vercel
+module.exports = app;
+
+// Iniciar o servidor localmente apenas se não estiver na Vercel
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+}
