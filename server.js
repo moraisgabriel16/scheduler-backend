@@ -19,7 +19,7 @@ const app = express();
 
 // Configuração do CORS para permitir apenas o front-end
 const corsOptions = {
-  origin: 'https://scheduler-frontend-dun.vercel.app', // URL do front-end
+  origin: ['https://scheduler-frontend-dun.vercel.app', 'http://localhost:3000'] // URL do front-end
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
   allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
   credentials: true, // Permitir envio de cookies, se necessário
