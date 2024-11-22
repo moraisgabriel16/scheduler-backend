@@ -149,4 +149,15 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Deletar todos os agendamentos
+router.delete('/', async (req, res) => {
+  try {
+    await Agendamento.deleteMany();
+    res.status(200).json({ message: 'Todos os agendamentos foram excluídos com sucesso.' });
+  } catch (error) {
+    console.error('Erro ao excluir todos os agendamentos:', error);
+    res.status(500).json({ message: 'Erro ao excluir todos os agendamentos.', error: error.message });
+  }
+});
+
 module.exports = router;
